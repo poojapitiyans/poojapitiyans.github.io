@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Coming Soon</title>
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css">
+    <!-- Your Custom CSS -->
+    <style>
+        body {
+            background-image: url('https://source.unsplash.com/featured/?children,school');
+            background-size: cover;
+            background-position: center;
+            color: #ecf0f1;
+            height: 100vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+        }
+        #countdown {
+            display: flex;
+            justify-content: space-around;
+            width: 100%;
+            max-width: 400px;
+            margin-top: 20px;
+        }
+        .time-segment {
+            text-align: center;
+            flex: 1;
+            padding: 10px;
+            border: 1px solid #ecf0f1;
+            margin: 5px;
+            border-radius: 5px;
+        }
+    </style>
+</head>
+<body>
+
+<div class="text-center">
+    <h1>Our Website is Under Construction</h1>
+    <p>We'll be here soon with our new awesome site.</p>
+</div>
+
+<div id="countdown" class="text-center mx-auto">
+    <div class="time-segment">
+        <span id="days"></span>
+        <p>Days</p>
+    </div>
+    <div class="time-segment">
+        <span id="hours"></span>
+        <p>Hours</p>
+    </div>
+    <div class="time-segment">
+        <span id="minutes"></span>
+        <p>Minutes</p>
+    </div>
+    <div class="time-segment">
+        <span id="seconds"></span>
+        <p>Seconds</p>
+    </div>
+</div>
+
+<!-- Bootstrap JS and dependencies -->
+<script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
+
+<!-- Countdown Script -->
+<script>
+    function updateCountdown() {
+        const launchDate = new Date('December 31, 2023 23:59:59').getTime();
+        const now = new Date().getTime();
+        const distance = launchDate - now;
+        
+        const days = Math.floor(distance / (1000 * 60 * 60 * 24));
+        const hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+        const minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
+        const seconds = Math.floor((distance % (1000 * 60)) / 1000);
+        
+        document.getElementById('days').innerText = days;
+        document.getElementById('hours').innerText = hours;
+        document.getElementById('minutes').innerText = minutes;
+        document.getElementById('seconds').innerText = seconds;
+    }
+    updateCountdown();
+    setInterval(updateCountdown, 1000);
+</script>
+
+</body>
+</html>
