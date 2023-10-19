@@ -9,15 +9,24 @@
     <!-- Your Custom CSS -->
     <style>
         body {
-            background-image: url('https://allroundclub.com/blog/wp-content/uploads/2021/10/How-to-draw-school.png');
-            background-size: cover;
-            background-position: center;
             color: #013362;
             height: 100vh;
+            font-weight: bolder;
             display: flex;
             flex-direction: column;
             justify-content: center;
             align-items: center;
+            overflow: hidden;
+        }
+        #background {
+            position: absolute;
+            top: -7%;
+            width: 110%;
+            height: 110%;
+            background-image: url('https://allroundclub.com/blog/wp-content/uploads/2021/10/How-to-draw-school.png');
+            background-size: cover;
+            background-position: center;
+            z-index: -1;
         }
         #countdown {
             display: flex;
@@ -29,9 +38,8 @@
         .time-segment {
             text-align: center;
             flex: 1;
-            font-weight: bolder;
             padding: 10px;
-            border: 1px solid #97929d;
+            border: 1px solid #013362;
             margin: 5px;
             border-radius: 5px;
         }
@@ -39,9 +47,11 @@
 </head>
 <body>
 
+<div id="background"></div>
+
 <div class="text-center">
     <h1>Our Website is Under Construction</h1>
-    <b>We'll be here soon with our new awesome site.</b>
+    <p>We'll be here soon with our new awesome site.</p>
 </div>
 
 <div id="countdown" class="text-center mx-auto">
