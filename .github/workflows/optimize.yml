@@ -20,7 +20,7 @@ jobs:
           node-version: '14'
 
       - name: Install Dependencies
-        run: npm install imagemin imagemin-pngquant imagemin-mozjpeg cssnano uglify-js
+        run: npm install imagemin imagemin-pngquant imagemin-mozjpeg postcss cssnano uglify-js
 
       - name: Optimize Images
         run: node .github/workflows/helpers/optimize.mjs
