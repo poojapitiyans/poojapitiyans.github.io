@@ -1,0 +1,38 @@
+name: Optimize Website Content
+
+on:
+  push:
+    branches:
+      - master
+
+jobs:
+  optimize:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v2
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v2
+        with:
+          node-version: '14'
+
+      - name: Install Dependencies
+        run: npm install imagemin imagemin-pngquant imagemin-mozjpeg cssnano uglify-js
+
+      - name: Optimize Images
+        run: npx imagemin 'images/*' --out-dir='optimized_images'
+
+      - name: Minify CSS and JS
+        run: |
+          npx cssnano css/style.css css/style.min.css
+          npx uglify-js js/script.js -o js/script.min.js
+
+      - name: Commit and Push
+        run: |
+          git config user.name "Damith (Bot)"
+          git config user.email "bot@damith.dev"
+          git add -A
+          git commit -m "Optimize assets"
+          git push
