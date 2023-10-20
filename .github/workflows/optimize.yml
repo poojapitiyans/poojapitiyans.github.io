@@ -22,26 +22,23 @@ jobs:
       - name: Install Dependencies
         run: npm install imagemin imagemin-pngquant imagemin-mozjpeg postcss cssnano uglify-js
 
+      - name: Create Temporary Branch
+        run: |
+          git checkout -b temp-branch || git checkout temp-branch
+
       - name: Optimize Images
         run: node .github/workflows/helpers/optimize.mjs
 
       - name: Minify CSS and JS
         run: node .github/workflows/helpers/minify.mjs
 
-      - name: Configure Git
+      - name: Commit Changes
         run: |
           git config user.name "GitHub Actions"
           git config user.email "actions@github.com"
-
-      - name: Create Branch
-        run: |
-          git checkout -b page || git checkout page
-
-      - name: Commit Changes
-        run: |
           git add -A
           git commit -m "Optimize assets" || echo "No changes to commit"
-          git push origin page || echo "No new changes to push"
+          git push origin temp-branch || echo "No new changes to push"
 
       - name: Create Pull Request
         id: create-pr
@@ -49,17 +46,17 @@ jobs:
         with:
           github-token: ${{ secrets.GITHUB_TOKEN }}
           script: |
-            const github = require('@actions/github');
+            const gh = require('@actions/github');
             const payload = {
               owner: 'poojapitiyans',
               repo: 'poojapitiyans.github.io',
               title: 'Optimize assets',
-              head: 'page',
-              base: 'main',
+              head: 'temp-branch',
+              base: 'page',
               body: 'Optimization of assets via automated GitHub Action',
               draft: false,
             };
-            const pr = await github.pulls.create(payload);
+            const pr = await gh.pulls.create(payload);
             return pr.data.number;
 
       - name: Merge Pull Request
@@ -68,15 +65,15 @@ jobs:
         with:
           github-token: ${{ secrets.GITHUB_TOKEN }}
           script: |
-            const github = require('@actions/github');
+            const gh = require('@actions/github');
             const prNumber = ${{ steps.create-pr.outputs.pr-number }};
-            await github.pulls.merge({
+            await gh.pulls.merge({
               owner: 'poojapitiyans',
               repo: 'poojapitiyans.github.io',
               pull_number: prNumber,
               commit_title: 'Merge optimization PR',
             });
 
-      - name: Delete Branch
+      - name: Delete Temporary Branch
         if: steps.create-pr.outputs.pr-number
-        run: git push origin --delete page
+        run: git push origin --delete temp-branch
