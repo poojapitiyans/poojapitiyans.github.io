@@ -27,16 +27,25 @@ jobs:
       - name: Optimize Images
         run: node .github/workflows/helpers/optimize.mjs
 
-      - name: Checkout Page Branch
-        uses: actions/checkout@v3
-        with:
-          ref: page  # Explicitly checkout the page branch
-          clean: false  # Keep the workspace files
-
-      - name: Commit Changes to Page Branch
+      - name: Create Temporary Branch
+        run: |
+          git checkout -b temp-branch
+          
+      - name: Commit Changes
         run: |
           git config user.name "GitHub Actions"
           git config user.email "actions@github.com"
           git add :/  # This adds all changes in the repository
           git commit -m "Optimize assets" || echo "No changes to commit"
-          git push --force origin page || echo "No new changes to push"
+          git push origin temp-branch || echo "No new changes to push"
+          
+      - name: Create Pull Request
+        uses: peter-evans/create-pull-request@v10
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+          title: "Optimize assets"
+          body: "Optimization of assets via automated GitHub Action"
+          branch: "temp-branch"
+          base: "page"
+          delete-branch: true  # This will delete the temporary branch post-merge
+
