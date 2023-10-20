@@ -37,12 +37,46 @@ jobs:
         run: |
           git checkout -b page || git checkout page
 
-      - name: Commit and Push
+      - name: Commit Changes
         run: |
           git add -A
           git commit -m "Optimize assets" || echo "No changes to commit"
-          git push https://${{ secrets.GITHUB_TOKEN }}@github.com/poojapitiyans/poojapitiyans.github.io.git HEAD:page
+          git push origin page || echo "No new changes to push"
 
-      - name: Revert to Main
-        if: always()
-        run: git checkout main
+      - name: Create Pull Request
+        id: create-pr
+        uses: gh-actions/github-script@v5
+        with:
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          script: |
+            const github = require('@actions/github');
+            const payload = {
+              owner: 'poojapitiyans',
+              repo: 'poojapitiyans.github.io',
+              title: 'Optimize assets',
+              head: 'page',
+              base: 'main',
+              body: 'Optimization of assets via automated GitHub Action',
+              draft: false,
+            };
+            const pr = await github.pulls.create(payload);
+            return pr.data.number;
+
+      - name: Merge Pull Request
+        if: steps.create-pr.outputs.pr-number
+        uses: gh-actions/github-script@v5
+        with:
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          script: |
+            const github = require('@actions/github');
+            const prNumber = ${{ steps.create-pr.outputs.pr-number }};
+            await github.pulls.merge({
+              owner: 'poojapitiyans',
+              repo: 'poojapitiyans.github.io',
+              pull_number: prNumber,
+              commit_title: 'Merge optimization PR',
+            });
+
+      - name: Delete Branch
+        if: steps.create-pr.outputs.pr-number
+        run: git push origin --delete page
