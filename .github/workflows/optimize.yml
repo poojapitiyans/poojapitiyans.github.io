@@ -26,7 +26,7 @@ jobs:
         run: node .github/workflows/helpers/optimize.mjs
 
       - name: Minify CSS and JS
-        run: node .github/workflows/helpers/node minify.mjs
+        run: node .github/workflows/helpers/minify.mjs
 
 
       - name: Commit and Push
