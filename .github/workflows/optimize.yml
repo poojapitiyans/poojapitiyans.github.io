@@ -17,10 +17,10 @@ jobs:
       - name: Setup Node.js
         uses: actions/setup-node@v2
         with:
-          node-version: '14'
+          node-version: '16'
 
       - name: Install Dependencies
-        run: npm install imagemin imagemin-pngquant imagemin-mozjpeg postcss cssnano uglify-js
+        run: npm install imagemin imagemin-pngquant imagemin-mozjpeg postcss cssnano uglify-js 
 
       - name: Create Temporary Branch
         run: |
@@ -39,7 +39,7 @@ jobs:
 
       - name: Create Pull Request
         id: create-pr
-        uses: actions/github-script@v4
+        uses: actions/github-script@v6
         with:
           github-token: ${{ secrets.GITHUB_TOKEN }}
           script: |
@@ -58,7 +58,7 @@ jobs:
 
       - name: Merge Pull Request
         if: steps.create-pr.outputs.pr-number
-        uses: actions/github-script@v4
+        uses: actions/github-script@v6
         with:
           github-token: ${{ secrets.GITHUB_TOKEN }}
           script: |
