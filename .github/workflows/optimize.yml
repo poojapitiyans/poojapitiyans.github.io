@@ -22,9 +22,9 @@ jobs:
       - name: Install Dependencies
         run: npm install imagemin imagemin-pngquant imagemin-mozjpeg postcss cssnano uglify-js @actions/github
 
-      - name: Create Temporary Branch
+      - name: Checkout Branch
         run: |
-          git checkout -b temp-branch || git checkout temp-branch
+          git checkout -b page || git checkout page
 
       - name: Optimize Images
         run: node .github/workflows/helpers/optimize.mjs
@@ -35,40 +35,4 @@ jobs:
           git config user.email "actions@github.com"
           git add :/  # This adds all changes in the repository
           git commit -m "Optimize assets" || echo "No changes to commit"
-          git push origin temp-branch || echo "No new changes to push"
-
-      - name: Create Pull Request
-        id: create-pr
-        uses: actions/github-script@v5
-        with:
-          github-token: ${{ secrets.GITHUB_TOKEN }}
-          script: |
-            const payload = {
-              owner: 'poojapitiyans',
-              repo: 'poojapitiyans.github.io',
-              title: 'Optimize assets',
-              head: 'temp-branch',
-              base: 'page',
-              body: 'Optimization of assets via automated GitHub Action',
-              draft: false,
-            };
-            const pr = await github.pulls.create(payload);
-            return pr.data.number;
-
-      - name: Merge Pull Request
-        if: steps.create-pr.outputs.pr-number
-        uses: actions/github-script@v5
-        with:
-          github-token: ${{ secrets.GITHUB_TOKEN }}
-          script: |
-            const prNumber = ${{ steps.create-pr.outputs.pr-number }};
-            await github.pulls.merge({
-              owner: 'poojapitiyans',
-              repo: 'poojapitiyans.github.io',
-              pull_number: prNumber,
-              commit_title: 'Merge optimization PR',
-            });
-
-      - name: Delete Temporary Branch
-        if: steps.create-pr.outputs.pr-number
-        run: git push origin --delete temp-branch
+          git push origin page || echo "No new changes to push"
