@@ -29,14 +29,11 @@ jobs:
       - name: Optimize Images
         run: node .github/workflows/helpers/optimize.mjs
 
-      - name: Minify CSS and JS
-        run: node .github/workflows/helpers/minify.mjs
-
       - name: Commit Changes
         run: |
           git config user.name "GitHub Actions"
           git config user.email "actions@github.com"
-          git add -A
+          git add :/  # This adds all changes in the repository
           git commit -m "Optimize assets" || echo "No changes to commit"
           git push origin temp-branch || echo "No new changes to push"
 
