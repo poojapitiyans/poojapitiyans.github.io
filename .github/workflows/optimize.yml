@@ -1,9 +1,9 @@
-name: Optimize Website Content
+name: Optimize and Commit
 
 on:
   push:
     branches:
-      - main
+      - master
 
 jobs:
   optimize:
@@ -11,7 +11,7 @@ jobs:
 
     steps:
       - name: Checkout Repository
-        uses: actions/checkout@v2
+        uses: actions/checkout@v3  # Assuming v3 is the latest version
 
       - name: Setup Node.js
         uses: actions/setup-node@v2
@@ -22,7 +22,7 @@ jobs:
         run: npm install imagemin imagemin-pngquant imagemin-mozjpeg cssnano uglify-js
 
       - name: Optimize Images
-        run: npx imagemin 'images/*' --out-dir='optimized_images'
+        run: node helpers/optimize.js
 
       - name: Minify CSS and JS
         run: |
@@ -31,8 +31,8 @@ jobs:
 
       - name: Commit and Push
         run: |
-          git config user.name "Damith (Bot)"
-          git config user.email "bot@damith.dev"
+          git config user.name "Optimization Bot"
+          git config user.email "optimize@bot.com"
           git add -A
           git commit -m "Optimize assets"
           git push
