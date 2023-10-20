@@ -43,7 +43,6 @@ jobs:
         with:
           github-token: ${{ secrets.GITHUB_TOKEN }}
           script: |
-            const gh = require('@actions/github');
             const payload = {
               owner: 'poojapitiyans',
               repo: 'poojapitiyans.github.io',
@@ -53,7 +52,7 @@ jobs:
               body: 'Optimization of assets via automated GitHub Action',
               draft: false,
             };
-            const pr = await gh.pulls.create(payload);
+            const pr = await github.pulls.create(payload);
             return pr.data.number;
 
       - name: Merge Pull Request
@@ -62,9 +61,8 @@ jobs:
         with:
           github-token: ${{ secrets.GITHUB_TOKEN }}
           script: |
-            const gh = require('@actions/github');
             const prNumber = ${{ steps.create-pr.outputs.pr-number }};
-            await gh.pulls.merge({
+            await github.pulls.merge({
               owner: 'poojapitiyans',
               repo: 'poojapitiyans.github.io',
               pull_number: prNumber,
