@@ -27,21 +27,11 @@ jobs:
       - name: Optimize Images
         run: node .github/workflows/helpers/optimize.mjs
 
-      - name: Cache Optimized Assets
-        uses: actions/cache@v2
-        with:
-          path: optimized-assets
-          key: ${{ runner.os }}-optimized-assets-${{ hashFiles('**/*.png', '**/*.jpg', '**/*.jpeg', '**/*.gif') }}
-
       - name: Checkout Page Branch
         uses: actions/checkout@v3
         with:
           ref: page  # Explicitly checkout the page branch
           clean: false  # Keep the workspace files
-
-      - name: Move Optimized Assets
-        run: |
-          mv optimized-assets/* .  # Move the optimized assets to the current directory
 
       - name: Commit Changes to Page Branch
         run: |
