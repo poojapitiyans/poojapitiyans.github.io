@@ -20,7 +20,7 @@ jobs:
           node-version: '16'
 
       - name: Install Dependencies
-        run: npm install imagemin imagemin-pngquant imagemin-mozjpeg postcss cssnano uglify-js 
+        run: npm install imagemin imagemin-pngquant imagemin-mozjpeg postcss cssnano uglify-js @actions/github
 
       - name: Create Temporary Branch
         run: |
