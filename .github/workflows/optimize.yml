@@ -40,7 +40,7 @@ jobs:
           git push origin temp-branch || echo "No new changes to push"
           
       - name: Create Pull Request
-        uses: peter-evans/create-pull-request@v10
+        uses: peter-evans/create-pull-request@v3
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
           title: "Optimize assets"
