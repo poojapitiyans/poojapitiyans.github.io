@@ -39,7 +39,7 @@ jobs:
 
       - name: Create Pull Request
         id: create-pr
-        uses: actions/github-script@v5
+        uses: actions/github-script@v4
         with:
           github-token: ${{ secrets.GITHUB_TOKEN }}
           script: |
@@ -58,7 +58,7 @@ jobs:
 
       - name: Merge Pull Request
         if: steps.create-pr.outputs.pr-number
-        uses: actions/github-script@v5
+        uses: actions/github-script@v4
         with:
           github-token: ${{ secrets.GITHUB_TOKEN }}
           script: |
