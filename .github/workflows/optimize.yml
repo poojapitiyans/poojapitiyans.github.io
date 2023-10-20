@@ -23,12 +23,11 @@ jobs:
         run: npm install imagemin imagemin-pngquant imagemin-mozjpeg cssnano uglify-js
 
       - name: Optimize Images
-        run: node helpers/optimize.mjs
+        run: node .github/workflows/helpers/optimize.mjs
 
       - name: Minify CSS and JS
-        run: |
-          npx cssnano css/style.css css/style.min.css
-          npx uglify-js js/script.js -o js/script.min.js
+        run: node .github/workflows/helpers/node minify.mjs
+
 
       - name: Commit and Push
         run: |
