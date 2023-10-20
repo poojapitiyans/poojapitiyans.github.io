@@ -3,7 +3,7 @@ name: Optimize Website Content
 on:
   push:
     branches:
-      - master
+      - main
 
 jobs:
   optimize:
