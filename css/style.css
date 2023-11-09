@@ -1356,3 +1356,13 @@ color:#fff;
 }
 
 /*Basic-Stylesheets-End-Here*/
+
+.custom-collapsed-bg.collapsing,
+.custom-collapsed-bg.in {
+  background-color: rgba(0, 0, 0, 0.7); /* Choose the color you like for the background */
+}
+
+.navbar-header .navbar-toggle {
+	float: left;
+	margin-right: 0; /* Remove any margin to the right if present */
+  }
